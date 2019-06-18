@@ -34,17 +34,22 @@ module.exports = function(RED) {
                     -ms-user-select: none;
                     user-select: none;
                 }
+
+
                 .dial.away .dial__ico__leaf {
-                    visibility: hidden;
+                    //visibility: hidden;
+                    opacity: 1;   
                 }
                 .dial.away .dial__lbl--target {
                     visibility: hidden;
+                    //opacity: 1;   
                 }
                 .dial.away .dial__lbl--target--half {
                     visibility: hidden;
+                    //opacity: 1;   
                 }
                 .dial.away .dial__lbl--away {
-                    opacity: 1;
+                    opacity: 2;
                 }
 
                 .dial.eco .dial__lbl--target {
@@ -66,6 +71,7 @@ module.exports = function(RED) {
                 .dial.off .dial__lbl--off {
                     opacity: 1;
                 }
+                    
                 .dial .dial__shape {
                     -webkit-transition: fill 0.5s;
                     transition: fill 0.5s;
@@ -114,6 +120,24 @@ module.exports = function(RED) {
                     alignment-baseline: central;
                 }
 
+                .dial__lbl--info1 {
+                    font-size: 20px;
+                    font-weight: 500;
+                    opacity: 1;
+                    pointer-events: none;  
+                }
+                .dial__lbl--info2 {
+                    font-size: 18px;
+                    font-weight: 500;
+                    opacity: 1;
+                    pointer-events: none;  
+                }
+                .dial__lbl--info3 {
+                    font-size: 18px;
+                    font-weight: 500;
+                    opacity: 1;
+                    pointer-events: none;  
+                }
                 .dial__lbl--target {
                     font-size: 120px;
                     font-weight: bold;
@@ -203,13 +227,13 @@ module.exports = function(RED) {
                     border-radius:50px 50px 50px 50px;
                     -moz-border-radius:50px 50px 50px 50px;
                     -webkit-border-radius:50px 50px 50px 50px;
-                    top:9px;
+                    top:2px;
                     background-color:transparent;	
                 }
                 .md-down_chevron{
                     position:absolute;    
                     display: inline-block;   
-                    margin: 80% 0% 0% 34%;
+                    margin: 82% 0% 0% 34%;
                     width: 35px; 	
                     height:50px;	
                     background: transparent;	
@@ -220,7 +244,7 @@ module.exports = function(RED) {
                     border-radius:50px 50px 50px 50px;
                     -moz-border-radius:50px 50px 50px 50px;
                     -webkit-border-radius:50px 50px 50px 50px;
-                    top:9px;
+                    top:5px;
                     background-color:transparent;	
                 }
                 .md-am{
@@ -237,25 +261,21 @@ module.exports = function(RED) {
                     border-radius:50px 50px 50px 50px;
                     -moz-border-radius:50px 50px 50px 50px;
                     -webkit-border-radius:50px 50px 50px 50px;
-                    top:9px;
+                    top:2px;
                     background-color:transparent;	
                 } 
                 .md-up_chevron{
                     position:absolute;
                     display: inline-block;
-                    margin:80% 0% 0% 56%;     
+                    margin:82% 0% 0% 56%;     
                     width: 35px; 
                     height:50px;	
                     background: transparent;
                     text-align:center;	
-                }
+                 }
             </style>
         
             <div id="thermostat" height="100%" width="100%" ng-init='init(` + configAsJson + `)'></div>
-
-            <p style="position:absolute;font-size:80%;text-align:center;margin:95px 0px 0px 116px;color:White;">{{msg.info1}}</p>
-            <p style="position:absolute;font-size:90%;text-align:center;margin:32px 0px 0px 110px;color:White;">{{msg.info2}}</p>
-            <p style="position:absolute;font-size:90%;text-align:center;margin:198px 0px 0px 132px;color:White;">{{msg.info3}}</p>
 
             <md-down_chevron class="md-down_chevron"
                 ng-mousedown = "msg.payload = 'down'; send(msg)">
@@ -414,6 +434,7 @@ module.exports = function(RED) {
                                     maxValue: options.maxValue || 30, // Maximum value for target temperature
                                     numTicks: options.numTicks || 200, // Number of tick lines to display around the dial
                                     onSetTargetTemperature: options.onSetTargetTemperature || function() {}, // Function called when new target temperature set by the dial
+                                    onSetInfoOne: options.onSetInfoOne || function() {}, // Function called when new InfoOne set by the dial			
                                 };
                                 
                                 /*
@@ -425,7 +446,7 @@ module.exports = function(RED) {
                                     radius: options.diameter/2,
                                     ticksOuterRadius: options.diameter / 30,
                                     ticksInnerRadius: options.diameter / 8,
-                                    hvac_states: ['off', 'eco', 'heating', 'cooling'],
+                                    hvac_states: ['off', 'eco', 'away', 'heating', 'cooling'],
                                     dragLockAxisDistance: 15,
                                 }
                                 properties.lblAmbientPosition = [properties.radius, properties.ticksOuterRadius-(properties.ticksOuterRadius-properties.ticksInnerRadius)/2]
@@ -456,6 +477,7 @@ module.exports = function(RED) {
                                         render();
                                     }
                                 });
+                                
                                 Object.defineProperty(this,'ambient_temperature',{
                                     get: function() {
                                         return state.ambient_temperature;
@@ -515,6 +537,38 @@ module.exports = function(RED) {
                                     }
                                 });
                                 
+                                
+                                Object.defineProperty(this,'info_one',{
+                                    get: function() {
+                                        return state.info_one;
+                                    },
+                                    set: function(val) {
+                                        state.info_one = (val);				
+                                        render();
+                                    }
+                                });	
+                                
+                                Object.defineProperty(this,'info_two',{
+                                    get: function() {
+                                        return state.info_two;
+                                    },
+                                    set: function(val) {
+                                        state.info_two = (val);				
+                                        render();
+                                    }
+                                });	
+                                
+                                Object.defineProperty(this,'info_three',{
+                                    get: function() {
+                                        return state.info_three;
+                                    },
+                                    set: function(val) {
+                                        state.info_three = (val);				
+                                        render();
+                                    }
+                                });			
+                                
+                                
                                 /*
                                  * SVG
                                  */
@@ -565,6 +619,8 @@ module.exports = function(RED) {
                                 /*
                                  * Labels
                                  */
+                                 
+                                // 
                                 var lblTarget = createSVGElement('text',{
                                     x: properties.radius,
                                     y: properties.radius,
@@ -572,20 +628,21 @@ module.exports = function(RED) {
                                 },svg);
                                 var lblTarget_text = document.createTextNode('');
                                 lblTarget.appendChild(lblTarget_text);
-                                //
+                                
                                 var lblTargetHalf = createSVGElement('text',{
                                     x: properties.radius + properties.radius/2.5,
                                     y: properties.radius - properties.radius/8,
                                     class: 'dial__lbl dial__lbl--target--half'
                                 },svg);
                                 var lblTargetHalf_text = document.createTextNode('5');
-                                lblTargetHalf.appendChild(lblTargetHalf_text);
-                                //
+                                lblTargetHalf.appendChild(lblTargetHalf_text);		
+                                
                                 var lblAmbient = createSVGElement('text',{
                                     class: 'dial__lbl dial__lbl--ambient'
                                 },svg);
                                 var lblAmbient_text = document.createTextNode('');
                                 lblAmbient.appendChild(lblAmbient_text);
+                                
                                 //
                                 var lblAway = createSVGElement('text',{
                                     x: properties.radius,
@@ -604,7 +661,8 @@ module.exports = function(RED) {
                                     y: properties.radius,
                                     class: 'dial__lbl dial__lbl--off'
                                 },svg);	
-                                
+
+
                                 var lblAway_text = document.createTextNode('AWAY');
                                 lblAway.appendChild(lblAway_text);
                                 //
@@ -617,6 +675,33 @@ module.exports = function(RED) {
                                 var icoLeaf = createSVGElement('path',{
                                     class: 'dial__ico__leaf'
                                 },svg);
+                                
+                                /*
+                                * INFO's
+                                */
+                                var lblInfo1 = createSVGElement('text',{
+                                    x: properties.radius -64,
+                                    y: properties.radius -155,
+                                    class: 'dial__lbl dial__lbl--info1'
+                                },svg);
+                                var lblInfo1_text = document.createTextNode('');
+                                lblInfo1.appendChild(lblInfo1_text);	
+                            
+                                var lblInfo2 = createSVGElement('text',{
+                                    x: properties.radius, // text is centered
+                                    y: properties.radius -64,
+                                    class: 'dial__lbl dial__lbl--info2'
+                                },svg);
+                                var lblInfo2_text = document.createTextNode('');
+                                lblInfo2.appendChild(lblInfo2_text);
+                            
+                                var lblInfo3 = createSVGElement('text',{
+                                    x: properties.radius, // text is centered
+                                    y: properties.radius +64,
+                                    class: 'dial__lbl dial__lbl--info3'
+                                },svg);
+                                var lblInfo3_text = document.createTextNode('');
+                                lblInfo3.appendChild(lblInfo3_text);		
                                 
                                 /*
                                  * LEAF
@@ -644,6 +729,9 @@ module.exports = function(RED) {
                                     renderTargetTemperature();
                                     renderAmbientTemperature();
                                     renderLeaf();
+                                    renderInfoOne();
+                                    renderInfoTwo();
+                                    renderInfoThree();			
                                 }
                                 render();
 
@@ -700,7 +788,6 @@ module.exports = function(RED) {
                                     lblTarget_text.nodeValue = Math.floor(self.target_temperature);
                                     setClass(lblTargetHalf,'shown',self.target_temperature%1!=0);
                                 }
-                                
                                 /*
                                  * RENDER - leaf
                                  */
@@ -738,14 +825,25 @@ module.exports = function(RED) {
                                 function renderOff() {
                                     svg.classList[self.off ? 'add' : 'remove']('off');
                                 }
-                                
+                                /*
+                                 * RENDER - infos
+                                 */
+                                function renderInfoOne() {
+                                    lblInfo1_text.nodeValue = (self.info_one);			
+                                }
+                                function renderInfoTwo() {
+                                    lblInfo2_text.nodeValue = (self.info_two);			
+                                }	
+                                function renderInfoThree() {
+                                    lblInfo3_text.nodeValue = (self.info_three);			
+                                }		
                                 /*
                                  * Helper functions
                                  */
                                 function restrictTargetTemperature(t) {
                                     return restrictToRange(roundHalf(t),options.minValue,options.maxValue);
                                 }
-                                
+
                                 function angle(point) {
                                     var dx = point[0] - properties.radius;
                                     var dy = point[1] - properties.radius;
@@ -801,8 +899,14 @@ module.exports = function(RED) {
                             } if (msg.topic == "eco") {
                                 $scope.nest.eco = msg.payload;
                             } if (msg.topic == "off") {
-                                $scope.nest.off = msg.payload;
-                            } 
+                                $scope.nest.off = msg.payload; 
+                            } if (msg.topic == "info1") {            
+                                $scope.nest.info_one = msg.payload; 
+                            } if (msg.topic == "info2") {            
+                                $scope.nest.info_two = msg.payload;
+                            } if (msg.topic == "info3") {            
+                                $scope.nest.info_three = msg.payload;            
+                            }	
                         });
                     }
                 });
