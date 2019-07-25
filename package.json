@@ -20,6 +20,13 @@
     "type": "git",
     "url": "git+https://github.com/bartbutenaers/node-red-contrib-ui-thermostat.git"
   },
+  "contributors": [
+    {
+      "name": "Dave North",
+      "url": "https://github.com/DaveNorth866"
+    }
+    "Dave North <zeke@sikelianos.com> (http://zeke.sikelianos.com)"
+  ],
   "node-red": {
     "nodes": {
       "ui_thermostat": "thermostat.js"
