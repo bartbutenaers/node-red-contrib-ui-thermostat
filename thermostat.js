@@ -307,6 +307,10 @@ module.exports = function(RED) {
                 ng-mousedown ="msg.payload = 'up'; send(msg)">
                 <img height="24px" ng-src="{{(msg.payload='ui_thermostat/resources/up-chevron.png')}}">
             </md-up_chevron>
+
+	    <md-flame class="md-flame">
+    		<img height="24px" ng-src="{{msg.icon2}}">
+	    </md-flame>
         `;
         
         return html;
