@@ -708,7 +708,7 @@ module.exports = function(RED) {
                                 */
                                 var lblInfo1 = createSVGElement('text',{
                                     x: properties.radius, // text is centered
-                                    y: properties.radius -95,
+                                    y: properties.radius +95,
                                     class: 'dial__lbl dial__lbl--info1'
                                 },svg);
                                 var lblInfo1_text = document.createTextNode('');
@@ -815,9 +815,9 @@ module.exports = function(RED) {
                                     lblTarget_text.nodeValue = Math.floor(self.target_temperature);
                                     setClass(lblTargetHalf,'shown',self.target_temperature%1!=0);
 				    lblTarget_sm_text.nodeValue = self.target_temperature;
-				    var peggedValue1 = restrictToRange(self.target_temperature, options.minValue, options.maxValue); 
-				    degs = properties.tickDegrees * (peggedValue1-options.minValue)/properties.rangeValue - properties.offsetDegrees; 
-				    if (peggedValue1 > self.ambient_temperature) {
+				    var peggedValue_one = restrictToRange(self.target_temperature, options.minValue, options.maxValue); 
+				    degs = properties.tickDegrees * (peggedValue_one-options.minValue)/properties.rangeValue - properties.offsetDegrees; 
+				    if (peggedValue_one > self.ambient_temperature) {
 					degs += 8;
 				    } else {
 					degs -= 8;
