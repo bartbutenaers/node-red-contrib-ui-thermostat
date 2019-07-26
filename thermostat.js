@@ -707,8 +707,8 @@ module.exports = function(RED) {
                                 * INFO's
                                 */
                                 var lblInfo1 = createSVGElement('text',{
-                                    x: properties.radius -64,
-                                    y: properties.radius -155,
+                                    x: properties.radius, // text is centered
+                                    y: properties.radius -95,
                                     class: 'dial__lbl dial__lbl--info1'
                                 },svg);
                                 var lblInfo1_text = document.createTextNode('');
@@ -716,7 +716,7 @@ module.exports = function(RED) {
                             
                                 var lblInfo2 = createSVGElement('text',{
                                     x: properties.radius, // text is centered
-                                    y: properties.radius -64,
+                                    y: properties.radius -70,
                                     class: 'dial__lbl dial__lbl--info2'
                                 },svg);
                                 var lblInfo2_text = document.createTextNode('');
@@ -724,7 +724,7 @@ module.exports = function(RED) {
                             
                                 var lblInfo3 = createSVGElement('text',{
                                     x: properties.radius, // text is centered
-                                    y: properties.radius +64,
+                                    y: properties.radius +70,
                                     class: 'dial__lbl dial__lbl--info3'
                                 },svg);
                                 var lblInfo3_text = document.createTextNode('');
