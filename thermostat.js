@@ -121,13 +121,13 @@ module.exports = function(RED) {
                 }
 
                 .dial__lbl--info1 {
-                    font-size: 20px;
+                    font-size: 19px;
                     font-weight: 500;
                     opacity: 1;
                     pointer-events: none;  
                 }
                 .dial__lbl--info2 {
-                    font-size: 18px;
+                    font-size: 24px;
                     font-weight: 500;
                     opacity: 1;
                     pointer-events: none;  
@@ -154,6 +154,11 @@ module.exports = function(RED) {
                     -webkit-transition: opacity 0s;
                     transition: opacity 0s;
                 }
+
+		.dial__lbl--target_sm {
+		    font-size: 18px;
+		    font-weight: 500;
+		}
 
                 .dial__lbl--ambient {
                     font-size: 18px;
@@ -273,6 +278,17 @@ module.exports = function(RED) {
                     background: transparent;
                     text-align:center;	
                  }
+
+		.md-flame{
+		    position:absolute;
+    		    display: inline-block;
+		    margin:5% 0% 0% 85%;    
+		    width: 35px; 
+		    height:50px;	
+    		    background: transparent;
+		    text-align:center;	
+ 		}		
+
             </style>
         
             <div id="thermostat" height="100%" width="100%" ng-init='init(` + configAsJson + `)'></div>
@@ -451,7 +467,8 @@ module.exports = function(RED) {
                                 }
                                 properties.lblAmbientPosition = [properties.radius, properties.ticksOuterRadius-(properties.ticksOuterRadius-properties.ticksInnerRadius)/2]
                                 properties.offsetDegrees = 180-(360-properties.tickDegrees)/2;
-                                        
+                                properties.lblTargetPosition = [properties.radius, properties.ticksOuterRadius-(properties.ticksOuterRadius-properties.ticksInnerRadius)/2]
+				properties.offsetDegrees = 180-(360-properties.tickDegrees)/2; 
                                 /*
                                  * Object state
                                  */
@@ -635,8 +652,14 @@ module.exports = function(RED) {
                                     class: 'dial__lbl dial__lbl--target--half'
                                 },svg);
                                 var lblTargetHalf_text = document.createTextNode('5');
-                                lblTargetHalf.appendChild(lblTargetHalf_text);		
-                                
+                                lblTargetHalf.appendChild(lblTargetHalf_text);
+				    
+                                var lblTarget_sm = createSVGElement('text',{
+					class: 'dial__lbl dial__lbl--target_sm'
+				},svg);
+				var lblTarget_sm_text = document.createTextNode('');
+				lblTarget_sm.appendChild(lblTarget_sm_text);
+
                                 var lblAmbient = createSVGElement('text',{
                                     class: 'dial__lbl dial__lbl--ambient'
                                 },svg);
@@ -765,8 +788,8 @@ module.exports = function(RED) {
                                  */
                                 function renderAmbientTemperature() {
                                     lblAmbient_text.nodeValue = self.ambient_temperature;		
-                                    if (self.ambient_temperature%1!=0) {
-                                    }
+                                    //if (self.ambient_temperature%1!=0) {
+                                    //}
                                     var peggedValue = restrictToRange(self.ambient_temperature, options.minValue, options.maxValue);
                                     degs = properties.tickDegrees * (peggedValue-options.minValue)/properties.rangeValue - properties.offsetDegrees;
                                     if (peggedValue > self.target_temperature) {
@@ -787,6 +810,19 @@ module.exports = function(RED) {
                                 function renderTargetTemperature() {
                                     lblTarget_text.nodeValue = Math.floor(self.target_temperature);
                                     setClass(lblTargetHalf,'shown',self.target_temperature%1!=0);
+				    lblTarget_sm_text.nodeValue = self.target_temperature;
+				    var peggedValue1 = restrictToRange(self.target_temperature, options.minValue, options.maxValue); 
+				    degs = properties.tickDegrees * (peggedValue1-options.minValue)/properties.rangeValue - properties.offsetDegrees; 
+				    if (peggedValue1 > self.ambient_temperature) {
+					degs += 8;
+				    } else {
+					degs -= 8;
+				    } 
+				    var pos = rotatePoint(properties.lblTargetPosition,degs,[properties.radius, properties.radius]);
+				    attr(lblTarget_sm,{
+				 	x: pos[0],
+					y: pos[1]
+				    }); 
                                 }
                                 /*
                                  * RENDER - leaf
