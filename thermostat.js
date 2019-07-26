@@ -767,13 +767,15 @@ module.exports = function(RED) {
                                  */
                                 function renderTicks() {
                                     var vMin, vMax;
+				    /* mod to show ticks in away mode					
                                     if (self.away) {
                                         vMin = self.ambient_temperature;
                                         vMax = vMin;
                                     } else {
-                                        vMin = Math.min(self.ambient_temperature, self.target_temperature);
-                                        vMax = Math.max(self.ambient_temperature, self.target_temperature);
-                                    }
+				    */
+                                     vMin = Math.min(self.ambient_temperature, self.target_temperature);
+                                     vMax = Math.max(self.ambient_temperature, self.target_temperature);
+                                    //}
                                     var min = restrictToRange(Math.round((vMin-options.minValue)/properties.rangeValue * options.numTicks),0,options.numTicks-1);
                                     var max = restrictToRange(Math.round((vMax-options.minValue)/properties.rangeValue * options.numTicks),0,options.numTicks-1);
                                     //
