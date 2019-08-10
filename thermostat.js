@@ -294,17 +294,17 @@ module.exports = function(RED) {
             <div id="thermostat" height="100%" width="100%" ng-init='init(` + configAsJson + `)'></div>
 
             <md-down_chevron class="md-down_chevron"
-                ng-mousedown = "msg.payload = 'down'; send(msg)">
+                ng-mousedown = "msg.topic = 'action'; msg.payload = 'down'; send(msg)">
                 <img height="24px" ng-src="{{(msg.payload='ui_thermostat/resources/down-chevron.png')}}">
             </md-down_chevron>
 
             <md-am class="md-am"
-                ng-mousedown = "msg.payload = 'am'; send(msg)">
+                ng-mousedown = "msg.topic = 'action'; msg.payload = 'am'; send(msg)">
                 <img height="24px" ng-src="{{msg.icon}}">
             </md-am>
 
             <md-up_chevron class="md-up_chevron"
-                ng-mousedown ="msg.payload = 'up'; send(msg)">
+                ng-mousedown ="msg.topic = 'action'; msg.payload = 'up'; send(msg)">
                 <img height="24px" ng-src="{{(msg.payload='ui_thermostat/resources/up-chevron.png')}}">
             </md-up_chevron>
 
